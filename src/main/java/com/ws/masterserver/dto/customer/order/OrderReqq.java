@@ -19,8 +19,6 @@ public class OrderReqq {
     private String shipPrice;
     private String shipMethod;
     private Long total;//cart + ship - discount
-    //private String coupon;
-//    private String discountCode;
     private List<CartResponse> cart;
     private String discountCode;
     private Long shipPriceDiscount;
