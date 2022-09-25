@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://ec2-52-214-23-110.eu-west-1.compute.amazonaws.com:5432/d2n0ml1pik72j4}
+    username: ${SPRING_DATASOURCE_USERNAME:sbxxefukpqiawk}
+    password: ${SPRING_DATASOURCE_PASSWORD:a8a6d9fc3b3acb03cc2b10c9a43dd0b345f0041c6ff62f2d039858f9360001d5}
+  jpa:
+    properties:
+      hibernate:
+        dialect: ${SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQLDialect}
+        format_sql: ${SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT-SQL:true}
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: ${SPRING_MAIL_USERNAME:hungnnit98@gmail.com}
+    password: ${SPRING_MAIL_PASSWORD:hzoyobgtgndaumvl}
+    port: 587
+    protocol: smtp
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable:true
+          auth: true
+logging:
+  level:
+    org:
+      hibernate: ERROR
+server:
+  error:
+    include-message: always
+cloud:
+  name: ${CLOUD_NAME:hungnn22cloudinary}
+  api:
+    key: ${CLOUD_API_KEY:384426152519968}
+    secret: ${CLOUD_API_SECRET:WjFBrrrKlAs1vU42mePi4FJLPW0}

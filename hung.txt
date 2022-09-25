@@ -1,0 +1,76 @@
+order-admin-search:
+select o1.id                                    as order_id,
+       o1.code                                  as order_code,
+       o1.created_date                          as order_date,
+       o1.note                                  as order_note,
+       o1.total                                 as order_total,
+       o1."type"                                as order_type,
+       o1.payed                                 as order_payed,
+       o1.ship_price                            as ship_price,
+       u1.id                                    as cus_id,
+       u1.gender                                as cus_gender,
+       concat(u1.first_name, ' ', u1.last_name) as cus_full_name,
+       u1.phone                                 as cus_phone,
+       concat(a1.exact, ', ', a1.combination)   as order_address,
+       st1."name"                               as ship_type_name,
+       os3.status                               as status_now,
+       os3.created_date                         as status_date,
+       u2."role"                                as status_role,
+       concat(u2.first_name, ' ', u2.last_name) as status_full_name,
+       os3.note                                 as status_note
+from orders o1
+         left join address a1 on
+    a1.id = o1.address_id
+         left join users u1 on
+    u1.id = o1.user_id
+         left join ship_type st1 on
+    st1.id = o1.ship_type_id
+         left join (
+    select os1.order_id          as os2_order_id,
+           max(os1.created_date) as os2_created_date
+    from order_status os1
+    group by os1.order_id) os2 on
+    os2.os2_order_id = o1.id
+         left join order_status os3 on
+    os3.created_date = os2.os2_created_date
+         left join users u2 on
+    u2.id = os3.created_by
+where 1 = 1
+
+------------------------------------------------------------------------------------------------------------------------
+
+select new com.ws.masterserver.dto.customer.product.search.ProductSubDto(
+p1.id,
+p1.name,
+po1.poSub1MinPrice,
+po2.poSub2MaxPrice,
+m1.name,
+ct1.name,
+p1.des,
+t1.name)
+from ProductEntity p1
+left join (
+select poSub1.productId as poSub1ProductId,
+min(poSub1.price) as poSub1MinPrice
+from ProductOptionEntity poSub1
+group by poSub1.productId) po1 on po1.poSub1ProductId = p1.id
+left join (
+select poSub2.productId as poSub2ProductId,
+max(poSub2.price) as poSub2MaxPrice
+from ProductOptionEntity poSub2
+group by poSub2.productId) po2 on po2.poSub1ProductId = p1.id
+left join MaterialEntity m1 on m1.id = p1.materialId
+left join CategoryEntity ct1 on ct1.id = p1.categoryId
+left join TypeEntity t1 on t1.id = ct1.TypeId
+left join ProductOptionEntity po3 on po3.productId = p1.id
+left join SizeEntity s1 on s1.id = po3.sizeId
+left join ColorEntity c1 on c1.id = po3.colorId
+where (p1.name is not null
+or upper(unaccent(p1.name)) like :textSearch
+or ct1.name is not null
+or upper(unaccent(ct1.name)) like :textSearch)
+and (po1.poSub1MinPrice is null or po1.poSub1MinPrice >= :minPrice)
+and (po2.poSub2MaxPrice is null or po2.poSub2MaxPrice <= :maxPrice)
+and (po3.colorId is not null or po3.colorId in :colorIds)
+and (po3.sizeId is not null or po3.sizeId in :sizeIds)
+order by p1.createdDate asc
