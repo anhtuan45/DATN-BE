@@ -778,7 +778,6 @@ public class OrderServiceImpl implements OrderService {
             OrderInfoMail orderIn4 = OrderInfoMail.builder()
                     .from(String.format(FROM, email))
                     .to(customer.getEmail())
-//                    .to("tuannguyen2k1123@gmail.com")
                     .text(FreeMarkerTemplateUtils.processTemplateIntoString(template, orderInfo))
                     .subject(SUBJECT + order.getCode() + " từ FLONE - LOOK GOOD, FEEL GOOD")
                     .build();
