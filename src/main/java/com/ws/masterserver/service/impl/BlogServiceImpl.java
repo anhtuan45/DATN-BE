@@ -46,17 +46,6 @@ public class BlogServiceImpl implements BlogService {
         List<BlogResponse> blog = repository.blogRepository.getBlogDetail(id);
         return new ResData<>(blog, WsCode.OK);
     }
-//    @Override
-//    public ResData<List<BlogResponse>> getAllBlog() {
-//        List<BlogResponse> blog = repository.blogRepository.getAllBlog();
-//        return new ResData<>(blog, WsCode.OK);
-//    }
-
-//    @Override
-//    public ResData<List<BlogResponse>> getAllBlogActive() {
-//        List<BlogResponse> blog = repository.blogRepository.getAllBlogActive();
-//        return new ResData<>(blog, WsCode.OK);
-//    }
 
     @Override
     public Object detail(CurrentUser currentUser, String id) {
@@ -106,37 +95,34 @@ public class BlogServiceImpl implements BlogService {
         }else{
             blog.setTitle(dto.getTitle());
         }
-//        ==
+
         if(dto.getTopicId()==null||dto.getTopicId().isEmpty()||dto.getTopicId().equals("")){
             blog.setTopicId(blog.getTopicId());
         }else{
             blog.setTopicId(dto.getTopicId());
         }
-//        ==
+
         if(dto.getContent()==null||dto.getContent().isEmpty()||dto.getContent().equals("")){
             blog.setContent(blog.getContent());
         }else{
             blog.setContent(dto.getContent());
         }
-//        ==
+
         if(dto.getTopicId()==null||dto.getTopicId().isEmpty()||dto.getTopicId().equals("")){
             blog.setTopicId(blog.getTopicId());
         }else{
             blog.setTopicId(dto.getTopicId());
         }
-//        ==
         if(dto.getImage()==null||dto.getImage().isEmpty()||dto.getImage().equals("")){
             blog.setImage(blog.getImage());
         }else{
             blog.setImage(dto.getImage());
         }
-//        ==
         if(dto.getDescription()==null||dto.getDescription().isEmpty()||dto.getDescription().equals("")){
             blog.setDescription(blog.getDescription());
         }else{
             blog.setDescription(dto.getDescription());
         }
-//        ==
         blog.setCreatedDate(new Date());
 
         repository.blogRepository.save(blog);
